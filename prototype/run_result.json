@@ -1,1 +1,238 @@
-FULL_JSON_CONTENT_HERE
+{
+  "meta": {
+    "seed": 42,
+    "n_conditions": 5,
+    "n_replicates": 4,
+    "run_hours": 24.0,
+    "n_timepoints": 48,
+    "data_sha256": "3abb585f946214c51f308bf2b26da9b0fc015cacb09bf2412ff091295f761fc0",
+    "synthetic": true,
+    "alpha": 0.05
+  },
+  "fit_quality": {
+    "median_r2": 0.9891,
+    "min_r2": 0.8411,
+    "curves_without_plateau": {
+      "M9_glucose": 0,
+      "M9_glycerol": 1,
+      "LB": 0,
+      "M9_glucose_lowN": 2,
+      "M9_acetate": 4
+    },
+    "median_relative_error_vs_truth": {
+      "K": 0.0166,
+      "r": 0.0294,
+      "t0": 0.0997
+    }
+  },
+  "condition_means": {
+    "M9_glucose": {
+      "K": 1.2003,
+      "r": 0.432,
+      "t0": 2.0309
+    },
+    "M9_glycerol": {
+      "K": 0.9112,
+      "r": 0.3162,
+      "t0": 3.2667
+    },
+    "LB": {
+      "K": 1.7269,
+      "r": 0.6266,
+      "t0": 1.1721
+    },
+    "M9_glucose_lowN": {
+      "K": 0.67,
+      "r": 0.2781,
+      "t0": 3.7045
+    },
+    "M9_acetate": {
+      "K": 2.9856,
+      "r": 0.164,
+      "t0": 1.9655
+    }
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "statement": "LB has a higher growth rate than M9 glucose.",
+      "parameter": "r",
+      "group_a": "LB",
+      "group_b": "M9_glucose",
+      "direction": "greater",
+      "rationale": "Rich medium (LB) supports faster growth than minimal medium.",
+      "falsified_if": "r(LB) is not greater than r(M9_glucose) at Holm-adjusted p < 0.05",
+      "test": {
+        "hypothesis_id": "H1",
+        "mean_a": 0.6266,
+        "mean_b": 0.432,
+        "n_a": 4,
+        "n_b": 4,
+        "t_stat": 6.425,
+        "p_one_sided": 0.0005439,
+        "p_holm": 0.002176,
+        "cohens_d": 4.543,
+        "ci95_diff": [
+          0.118,
+          0.2711
+        ]
+      },
+      "verdict": "supported",
+      "objections": [
+        "Only 4 and 4 replicates; the t-test has little power to detect small effects.",
+        "Data are synthetic; this verdict says nothing about real cultures."
+      ]
+    },
+    {
+      "id": "H2",
+      "statement": "Low nitrogen lowers carrying capacity versus M9 glucose.",
+      "parameter": "K",
+      "group_a": "M9_glucose_lowN",
+      "group_b": "M9_glucose",
+      "direction": "less",
+      "rationale": "Nitrogen limitation lowers final biomass.",
+      "falsified_if": "K(M9_glucose_lowN) is not smaller than K(M9_glucose) at Holm-adjusted p < 0.05",
+      "test": {
+        "hypothesis_id": "H2",
+        "mean_a": 0.67,
+        "mean_b": 1.2,
+        "n_a": 4,
+        "n_b": 4,
+        "t_stat": -14.3,
+        "p_one_sided": 5.664e-05,
+        "p_holm": 0.0002832,
+        "cohens_d": -10.11,
+        "ci95_diff": [
+          -0.632,
+          -0.4286
+        ]
+      },
+      "verdict": "supported",
+      "objections": [
+        "4 of 8 curve fits have R2 below 0.98.",
+        "Only 4 and 4 replicates; the t-test has little power to detect small effects.",
+        "Data are synthetic; this verdict says nothing about real cultures."
+      ]
+    },
+    {
+      "id": "H3",
+      "statement": "Acetate has a longer lag than M9 glucose.",
+      "parameter": "t0",
+      "group_a": "M9_acetate",
+      "group_b": "M9_glucose",
+      "direction": "greater",
+      "rationale": "Poor carbon sources such as acetate lengthen the lag phase.",
+      "falsified_if": "t0(M9_acetate) is not greater than t0(M9_glucose) at Holm-adjusted p < 0.05",
+      "test": {
+        "hypothesis_id": "H3",
+        "mean_a": 1.965,
+        "mean_b": 2.031,
+        "n_a": 4,
+        "n_b": 4,
+        "t_stat": -0.05352,
+        "p_one_sided": 0.5197,
+        "p_holm": 1.0,
+        "cohens_d": -0.03784,
+        "ci95_diff": [
+          -3.842,
+          3.712
+        ]
+      },
+      "verdict": "inconclusive",
+      "objections": [
+        "4 of 8 curve fits have R2 below 0.98.",
+        "Curves for M9_acetate did not reach plateau within the run, so K is not identifiable and r and lag are biased. Extend the run before testing this.",
+        "Only 4 and 4 replicates; the t-test has little power to detect small effects.",
+        "Data are synthetic; this verdict says nothing about real cultures.",
+        "Lag is defined relative to a fixed inoculum OD; an error in that value shifts every lag."
+      ]
+    },
+    {
+      "id": "H4",
+      "statement": "Glycerol has a lower growth rate than M9 glucose.",
+      "parameter": "r",
+      "group_a": "M9_glycerol",
+      "group_b": "M9_glucose",
+      "direction": "less",
+      "rationale": "Glycerol supports slower growth than glucose.",
+      "falsified_if": "r(M9_glycerol) is not smaller than r(M9_glucose) at Holm-adjusted p < 0.05",
+      "test": {
+        "hypothesis_id": "H4",
+        "mean_a": 0.3162,
+        "mean_b": 0.432,
+        "n_a": 4,
+        "n_b": 4,
+        "t_stat": -6.039,
+        "p_one_sided": 0.001329,
+        "p_holm": 0.003987,
+        "cohens_d": -4.27,
+        "ci95_diff": [
+          -0.167,
+          -0.06466
+        ]
+      },
+      "verdict": "supported",
+      "objections": [
+        "Only 4 and 4 replicates; the t-test has little power to detect small effects.",
+        "Data are synthetic; this verdict says nothing about real cultures."
+      ]
+    },
+    {
+      "id": "H5",
+      "statement": "Negative control: glycerol reaches a higher carrying capacity than LB.",
+      "parameter": "K",
+      "group_a": "M9_glycerol",
+      "group_b": "LB",
+      "direction": "greater",
+      "rationale": "No prior supports this; the pipeline should refute it.",
+      "falsified_if": "K(M9_glycerol) is not greater than K(LB) at Holm-adjusted p < 0.05",
+      "test": {
+        "hypothesis_id": "H5",
+        "mean_a": 0.9112,
+        "mean_b": 1.727,
+        "n_a": 4,
+        "n_b": 4,
+        "t_stat": -15.83,
+        "p_one_sided": 1.0,
+        "p_holm": 1.0,
+        "cohens_d": -11.19,
+        "ci95_diff": [
+          -0.9579,
+          -0.6735
+        ]
+      },
+      "verdict": "refuted",
+      "objections": [
+        "Only 4 and 4 replicates; the t-test has little power to detect small effects.",
+        "Data are synthetic; this verdict says nothing about real cultures."
+      ]
+    }
+  ],
+  "log": [
+    {
+      "step": 1,
+      "role": "Orchestrator",
+      "summary": "Generated 960 readings, sha256 3abb585f9462."
+    },
+    {
+      "step": 2,
+      "role": "HypothesisGenerator",
+      "summary": "Proposed 5 hypotheses from 4 priors."
+    },
+    {
+      "step": 3,
+      "role": "Analyst",
+      "summary": "Fitted 20 curves, median R2 0.9891, 7 without plateau."
+    },
+    {
+      "step": 4,
+      "role": "Analyst",
+      "summary": "Ran 5 Welch tests with Holm adjustment."
+    },
+    {
+      "step": 5,
+      "role": "Critic",
+      "summary": "Verdicts: {'supported': 3, 'inconclusive': 1, 'refuted': 1}."
+    }
+  ]
+}
